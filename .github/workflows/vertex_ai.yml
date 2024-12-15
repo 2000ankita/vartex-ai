@@ -24,7 +24,7 @@ jobs:
 
       - name: Compile the pipeline
         run: |
-          python compile_pipeline.py  # This compiles the pipeline to pipeline.json
+          python pipelines/compile_pipeline.py  # This compiles the pipeline to pipeline.json
 
       - name: Upload Pipeline to GCS
         run: |
