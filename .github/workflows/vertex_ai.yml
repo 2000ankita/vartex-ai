@@ -46,4 +46,5 @@ jobs:
           gcloud beta ai pipelines run \
             --region=us-central1 \
             --template-path=gs://bucketz1234nix/pipelines/pipeline.json \
-            --pipeline-root=gs://bucketz1234nix/artifacts/
+            --pipeline-root=gs://bucketz1234nix/artifacts/ \
+            --quiet
