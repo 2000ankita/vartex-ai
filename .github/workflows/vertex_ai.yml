@@ -22,18 +22,19 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-
-      - name: Compile the pipeline
-        run: |
-          python pipelines/compile_pipeline.py  # This compiles the pipeline to pipeline.json
       - name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v0
+        uses: google-github-actions/setup-gcloud@v0
         with:
-          credentials_json: ${{ secrets.GCP_SA_KEY }}  # Replace with your secret containing the service account key JSON
+          service_account_key: ${{ secrets.GCP_CREDENTIALS }}
+          project_id: ${{ secrets.GCP_PROJECT }}
+
+      - name: Compile pipeline
+        run: |
+          python pipelines/compile_pipeline.py
 
       - name: Upload Pipeline to GCS
         run: |
-          gsutil cp pipeline.json gs://bucketz1234nix/pipelines/  # Ensure pipeline.json exists
+          gsutil cp pipeline.json gs://your-bucket-name/pipelines/
 
       - name: Submit Pipeline to Vertex AI
         run: |
