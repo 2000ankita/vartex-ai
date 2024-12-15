@@ -1,0 +1,38 @@
+name: Build, Test, and Deploy Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-test-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python environment
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Compile pipeline
+        run: |
+          python pipelines/train_pipeline.py
+
+      - name: Upload Pipeline to GCS
+        run: |
+          gsutil cp pipeline.json gs://your-bucket-name/pipelines/
+
+      - name: Submit Pipeline to Vertex AI
+        run: |
+          gcloud ai pipelines run \
+            --region=us-central1 \
+            --template-path=gs://your-bucket-name/pipelines/pipeline.json \
+            --pipeline-root=gs://your-bucket-name/artifacts/
