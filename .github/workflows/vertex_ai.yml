@@ -18,15 +18,20 @@ jobs:
         with:
           python-version: 3.9
 
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          project_id: ${{ secrets.GCP_PROJECT }}
+          version: latest
+
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-
-      - name: Authenticate to Google Cloud
-        uses: google-github-actions/setup-gcloud@v1
-        with:
-          service_account_key: ${{ secrets.GCP_CREDENTIALS }}
-          project_id: ${{ secrets.GCP_PROJECT }}
 
       - name: Compile pipeline
         run: |
