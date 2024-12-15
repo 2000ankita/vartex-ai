@@ -1,38 +1,38 @@
-name: Compile and Upload Pipeline
+name: Build, Test, and Deploy Pipeline
 
 on:
   push:
     branches:
-      - main  # Trigger the workflow on push to the 'main' branch
-  workflow_dispatch:  # Allows manual trigger
+      - main
 
 jobs:
-  compile_pipeline:
-    runs-on: ubuntu-latest  # Run on the latest Ubuntu image
-    
+  build-test-deploy:
+    runs-on: ubuntu-latest
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3  # Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Set up Python
-      uses: actions/setup-python@v4  # Set up Python
-      with:
-        python-version: '3.9'  # Specify the Python version to use
+      - name: Set up Python environment
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
 
-    - name: Install dependencies
-      run: |
-        pip install -r requirements.txt  # Install dependencies from requirements.txt
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
 
-    - name: Compile pipeline
-      run: |
-        python compile_pipeline.py  # Run the script to compile the pipeline
+      - name: Compile pipeline
+        run: |
+          python pipelines/train_pipeline.py
 
-    - name: Set up Google Cloud credentials
-      uses: google-github-actions/setup-gcloud@v3
-      with:
-        project_id: ${{ secrets.GCP_PROJECT_ID }}  # Use secrets for your GCP project ID
-        credentials_json: ${{ secrets.GCP_CREDENTIALS_JSON }}  # Use secrets for your GCP credentials JSON
+      - name: Upload Pipeline to GCS
+        run: |
+          gsutil cp pipeline.json gs://your-bucket-name/pipelines/
 
-    - name: Upload pipeline.json to GCS
-      run: |
-        gsutil cp pipeline.json gs://your-bucket-name/pipelines/  # Upload the pipeline JSON to your GCS bucket
+      - name: Submit Pipeline to Vertex AI
+        run: |
+          gcloud ai pipelines run \
+            --region=us-central1 \
+            --template-path=gs://your-bucket-name/pipelines/pipeline.json \
+            --pipeline-root=gs://your-bucket-name/artifacts/
