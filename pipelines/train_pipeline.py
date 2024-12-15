@@ -1,5 +1,6 @@
 from kfp import dsl
-from kfp.dsl import component, Output, Dataset, Model
+from kfp.dsl import component, Output, Dataset, Model, Input
+
 
 
 @component
