@@ -43,7 +43,7 @@ jobs:
 
       - name: Submit Pipeline to Vertex AI
         run: |
-          gcloud ai pipelines run \
+          gcloud beta ai pipelines run \
             --region=us-central1 \
             --template-path=gs://bucketz1234nix/pipelines/pipeline.json \
             --pipeline-root=gs://bucketz1234nix/artifacts/
