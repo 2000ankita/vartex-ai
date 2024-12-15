@@ -2,9 +2,13 @@ from kfp.v2 import dsl
 from kfp.v2.dsl import component
 
 @component
-def preprocess_component(output_dir: str):
+def preprocess_component(output_dir: str) -> str:
+    import os
     import subprocess
+    os.makedirs(output_dir, exist_ok=True)
     subprocess.run(["python", "components/preprocessing/preprocess.py", output_dir])
+    return output_dir
+
 
 @component
 def train_component(train_file: str, model_dir: str):
