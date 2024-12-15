@@ -1,4 +1,4 @@
-google-cloud-aiplatform
+google-cloud-aiplatform>=1.35.0
 pandas
 scikit-learn
 kfp
