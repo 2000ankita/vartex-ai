@@ -1,7 +1,6 @@
+import kfp
 from kfp import dsl
 from kfp.dsl import component, Output, Dataset, Model, Input
-
-
 
 @component
 def preprocess_component(output_dir: Output[Dataset]):
