@@ -22,13 +22,13 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      - name: Compile pipeline
+      - name: Compile the pipeline
         run: |
-          python pipelines/train_pipeline.py
+          python compile_pipeline.py  # This compiles the pipeline to pipeline.json
 
       - name: Upload Pipeline to GCS
         run: |
-          gsutil cp pipeline.json gs://your-bucket-name/pipelines/
+          gsutil cp pipeline.json gs://your-bucket-name/pipelines/  # Ensure pipeline.json exists
 
       - name: Submit Pipeline to Vertex AI
         run: |
