@@ -39,11 +39,11 @@ jobs:
 
       - name: Upload Pipeline to GCS
         run: |
-          gsutil cp pipeline.json gs://your-bucket-name/pipelines/
+          gsutil cp pipeline.json gs://bucketz1234nix/pipelines/
 
       - name: Submit Pipeline to Vertex AI
         run: |
           gcloud ai pipelines run \
             --region=us-central1 \
-            --template-path=gs://your-bucket-name/pipelines/pipeline.json \
-            --pipeline-root=gs://your-bucket-name/artifacts/
+            --template-path=gs://bucketz1234nix/pipelines/pipeline.json \
+            --pipeline-root=gs://bucketz1234nix/artifacts/
